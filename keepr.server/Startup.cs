@@ -29,49 +29,60 @@ namespace keepr.server
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      ConfigureCors(services);
+      ConfigureAuth(services);
 
-      services.AddAuthentication(options =>
-{
-  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-  options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
-  options.Audience = Configuration["Auth0:Audience"];
-});
+      services.AddControllers();
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "keepr.Server", Version = "v1" });
+      });
 
+      services.AddScoped<IDbConnection>(x => CreateDbConnection());
+
+      // TRANSIENT SERVICE
+
+      // TRANSIENT REPOSITORIES
+
+
+    }
+
+    private void ConfigureCors(IServiceCollection services)
+    {
       services.AddCors(options =>
       {
         options.AddPolicy("CorsDevPolicy", builder =>
               {
                 builder
-                        .WithOrigins(new string[]{
-                          "http://localhost:8080",
-                                "http://localhost:8081"
-                              })
-                              .AllowAnyMethod()
-                              .AllowAnyHeader()
-                              .AllowCredentials();
+                      .AllowAnyMethod()
+                      .AllowAnyHeader()
+                      .AllowCredentials()
+                      .WithOrigins(new string[]{
+                        "http://localhost:8080", "http://localhost:8081"
+                  });
               });
       });
+    }
 
-      services.AddControllers();
-
-      // NOTE add transient services
-
-      // NOTE add transient repositories
-
-      services.AddScoped<IDbConnection>(x => CreateDbConnection());
-
-      services.AddSwaggerGen(c =>
+    private void ConfigureAuth(IServiceCollection services)
+    {
+      services.AddAuthentication(options =>
       {
-        c.SwaggerDoc("v1", new OpenApiInfo { Title = "keepr.server", Version = "v1" });
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+      }).AddJwtBearer(options =>
+      {
+        // NOTE this must match the object structure in appsettings.json
+        options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+        options.Audience = Configuration["Auth0:Audience"];
       });
+
     }
 
     private IDbConnection CreateDbConnection()
     {
-      string connectionString = Configuration["db:scalegrid"];
+      // NOTE this must match the object structure in appsettings.json
+      string connectionString = Configuration["DB:gearhost"];
       return new MySqlConnection(connectionString);
     }
 
@@ -82,11 +93,13 @@ namespace keepr.server
       {
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "keepr.server v1"));
+        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "keepr.Server v1"));
+        app.UseCors("CorsDevPolicy");
       }
 
       app.UseHttpsRedirection();
 
+      // NOTE use to serve your built client
       app.UseDefaultFiles();
       app.UseStaticFiles();
 
