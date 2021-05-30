@@ -1,3 +1,4 @@
+using System;
 using keepr.server.Models;
 using keepr.server.Repositories;
 
@@ -23,5 +24,9 @@ namespace keepr.server.Services
       return profile;
     }
 
+    internal Profile GetProfileById(string id)
+    {
+      return _repo.GetById(id);
+    }
   }
 }
