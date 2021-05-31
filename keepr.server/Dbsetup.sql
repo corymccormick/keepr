@@ -6,3 +6,7 @@ CREATE TABLE IF NOT EXISTS accounts(
   email varchar(255) COMMENT 'User Email',
   picture varchar(255) COMMENT 'User Picture'
 ) default charset utf8 COMMENT '';
+CREATE TABLE IF NOT EXISTS keeps(
+  id int AUTO_INCREMENT NOT NULL primary key COMMENT 'primary key',
+  creatorId VARCHAR(255) NOT NULL
+)
