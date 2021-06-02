@@ -43,10 +43,13 @@ namespace keepr.server
       services.AddScoped<IDbConnection>(x => CreateDbConnection());
 
       // TRANSIENT SERVICE
-      services.AddScoped<AccountService>();
+      services.AddTransient<AccountService>();
+      services.AddTransient<KeepsService>();
+
 
       // TRANSIENT REPOSITORIES
-      services.AddScoped<AccountRepository>();
+      services.AddTransient<AccountRepository>();
+      services.AddTransient<KeepsRepository>();
 
     }
 
