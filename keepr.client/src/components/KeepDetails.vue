@@ -1,7 +1,7 @@
 <template>
   <div class="keep-Details">
-    <div class=" row card shadow ">
-      <div class="col-3 mt-3 ">
+    <div class=" row card shadow  ">
+      <div class="col-3 m-3 p-1 ">
         <img class="pic " :src="keep.img" alt="" />
         <div class="row">
           {{ keep.name }}
