@@ -48,11 +48,30 @@ namespace keepr.server.Repositories
       , new { id }, splitOn: "id").FirstOrDefault();
     }
 
+    internal IEnumerable<Keep> GetByProfileId(string accountId)
+    {
+      string sql = @"
+                SELECT 
+                    k.*,
+                    a.* 
+                FROM keeps k
+                JOIN accounts a ON a.id = k.creatorId
+                WHERE k.creatorId = @accountId ;
+                ";
+      return _db.Query<Keep, Profile, Keep>(sql, (k, p) =>
+  {
+    k.Creator = p;
+    return k;
+  }, new { accountId }).ToList();
+    }
+
+
+
     internal Keep Create(Keep newKeep)
     {
       string sql = @"
       INSERT INTO keeps
-      (CreatorId,name, description, img, views, keeps)
+      (CreatorId, name, description, img, views, keeps)
       VALUES
       (@CreatorId, @Name, @Description, @Img, @Views, @Keeps);
       SELECT LAST_INSERT_ID()";

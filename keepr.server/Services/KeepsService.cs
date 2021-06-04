@@ -52,6 +52,11 @@ namespace keepr.server.Services
       return _keepsRepository.Update(k);
     }
 
+    internal IEnumerable<Keep> GetKeepsByProfileId(string id)
+    {
+      return _keepsRepository.GetByProfileId(id);
+    }
+
     internal void Delete(int id, string creatorId)
     {
       Keep keep = GetById(id);

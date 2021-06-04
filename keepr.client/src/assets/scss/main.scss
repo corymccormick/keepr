@@ -21,3 +21,34 @@ main {
   display: flex;
   align-items: stretch;
 }
+body {
+  margin: 8px;
+}
+
+.masonry-root {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  .masonry-cell {
+    flex: 1;
+    margin: 4px;
+    .masonry-item {
+      background: #EC985A;
+      color: white;
+      margin: 4px;
+      text-align: center;
+      font-family: system-ui;
+      font-weight: 900;
+      font-size: 32px;
+    }
+  } 
+  @for $i from 1 through 512 { 
+    .masonry-cell:nth-child(#{$i}) {
+      .masonry-item {
+        $h: (random(128) + 64) + px;
+        height: $h;
+        line-height: $h;
+      }
+    }
+  }
+}

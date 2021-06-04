@@ -45,11 +45,15 @@ namespace keepr.server
       // TRANSIENT SERVICE
       services.AddTransient<AccountService>();
       services.AddTransient<KeepsService>();
+      services.AddTransient<VaultsService>();
+      services.AddTransient<VaultKeepsService>();
 
 
       // TRANSIENT REPOSITORIES
       services.AddTransient<AccountRepository>();
       services.AddTransient<KeepsRepository>();
+      services.AddTransient<VaultsRepository>();
+      services.AddTransient<VaultKeepsRepository>();
 
     }
 
