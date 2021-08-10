@@ -18,10 +18,12 @@ namespace keepr.server.Controllers
     private readonly AccountService _accountService;
 
 
+
     public VaultsController(VaultsService vaultsService, AccountService accountService)
     {
       _vaultsService = vaultsService;
       _accountService = accountService;
+
 
     }
 
@@ -72,6 +74,20 @@ namespace keepr.server.Controllers
       }
     }
 
+
+    [HttpGet("{id}/keeps")]
+    public ActionResult<IEnumerable<VaultKeepViewModel>> GetVaultKeepsById(int id)
+    {
+      try
+      {
+        IEnumerable<VaultKeepViewModel> keeps = _vaultsService.GetVaultKeepsById(id);
+        return Ok(keeps);
+      }
+      catch (System.Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
 
     [Authorize]
     [HttpPut("{id}")]

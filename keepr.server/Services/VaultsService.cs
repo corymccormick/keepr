@@ -65,19 +65,24 @@ namespace keepr.server.Services
 
     internal IEnumerable<Vault> GetVaultsByProfileId(string id, string UserId)
     {
-      return _vaultsRepository.GetVaultsByProfileId(id, UserId != id );
-      
+      return _vaultsRepository.GetVaultsByProfileId(id, UserId != id);
+
     }
 
     internal IEnumerable<VaultKeepViewModel> GetKeeps(int vaultId)
     {
-      return _vkrepo.GetKeepsByVaultId(vaultId); 
+      return _vkrepo.GetKeepsByVaultId(vaultId);
       // NOTE start over in vault controller moving to keeps service and kicking to vkrepo getkeepsbyvaultId
     }
 
     internal IEnumerable<Vault> GetKeepsByVaultId(int id)
     {
       return _vaultsRepository.GetByVaultId(id);
+    }
+
+    internal IEnumerable<VaultKeepViewModel> GetVaultKeepsById(int vaultId)
+    {
+      return _vkrepo.GetVaultByKeepsId(vaultId);
     }
   }
 }

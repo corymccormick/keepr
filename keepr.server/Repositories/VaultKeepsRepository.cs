@@ -46,9 +46,9 @@ namespace keepr.server.Repositories
     }
 
 
-    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    internal IEnumerable<VaultKeepViewModel> GetKeepsByVaultId(int vaultId, bool excludePrivate)
     {
-      string sql = @"
+      string sql = $@"
                  SELECT
                 k.*,
                 vk.id as vaultKeepId,
@@ -59,8 +59,27 @@ namespace keepr.server.Repositories
                 JOIN vaults v ON v.id = vk.vaultId
                 JOIN keeps k ON k.id = vk.keepId
                 WHERE
-                vk.vaultId = @vaultId;
+                vk.vaultId = @vaultId
+                {(excludePrivate ? "AND v.isPrivate = FALSE" : "")}
                 ";
+      return _db.Query<VaultKeepViewModel>(sql, new { vaultId }).ToList();
+    }
+
+    internal IEnumerable<VaultKeepViewModel> GetVaultByKeepsId(int vaultId)
+    {
+      string sql = @"
+                SELECT
+                k.*,
+                vk.id as vaultKeepId,
+                vk.keepId as keepId,
+                vk.vaultId as vaultId
+                FROM
+                vault_keeps vk
+                JOIN vaults v ON v.id = vk.vaultId
+                JOIN keeps k ON k.id = vk.keepId
+                WHERE
+                vk.vaultId = @vaultId;
+            ";
       return _db.Query<VaultKeepViewModel>(sql, new { vaultId }).ToList();
     }
   }

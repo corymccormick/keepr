@@ -1,8 +1,16 @@
 <template>
-  <span>This is a profile page</span>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col mt-3 ">
+        <img class="" :src="profile.picture" alt="">
+      </div>
+      <div class="col mt-3">
+        {{ profile.name }} <br /> Vaults: {{ 0 }} <br /> Keeps: {{ 0 }}
+      </div>
+    </div>
+  </div>
   <!-- create keep modal -->
   <!-- create vault modal -->
-  {{ profile }}
 </template>
 
 <script>
@@ -12,10 +20,10 @@ import { AppState } from '../AppState'
 import { profilesService } from '../services/ProfilesService'
 
 export default {
+  name: 'Profile',
   setup() {
     const route = useRoute()
     watchEffect(() => {
-      profilesService.getProfile(route.params.id)
       profilesService.getProfile(route.params.id)
       profilesService.getProfileKeeps(route.params.id)
       profilesService.getProfileVaults(route.params.id)
@@ -36,21 +44,3 @@ export default {
 <style>
 
 </style>
-
-      // name: 'Profile',
-      // props: {
-      //   profileProp: {
-      //     type: Object,
-      //     required: true
-      //   }
-      // }
-
-        // })
-        // onMounted(async() => {
-        //   try {
-        //     await profilesService.getProfile(route.params.id)
-        //     await profilesService.getProfileKeeps(route.params.id)
-        //     await profilesService.getProfileVaults(route.params.id)
-        //   } catch (error) {
-        //   }
-        // })

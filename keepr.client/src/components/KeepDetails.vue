@@ -7,9 +7,8 @@
           {{ keep.name }}
           {{ keep.creator.name }}
           <router-link :to="{name: 'Profile', params:{id: keep.creator.id}}">
-            <img class="d-flex justify-content-left rounded-circle m-2 avatar" :src="keep.creator.img" alt="" />
+            <img class="d-flex justify-content-left rounded-circle m-2 avatar" :src="keep.creator.picture" alt="" />
           </router-link>
-          <img :src="keep.creator.img" />
         </div>
       </div>
     </div>
@@ -53,7 +52,7 @@ export default {
 .pic {
   height: 300px;
   width: 200px;
-  background-image: cover;
+ ;
 }
 .bg {
 background-image: cover;

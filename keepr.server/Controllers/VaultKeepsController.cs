@@ -40,19 +40,6 @@ namespace keepr.server.Controllers
       }
     }
 
-    // [HttpGet("{id}/keeps")]
-    // public ActionResult<IEnumerable<VaultKeepViewModel>> GetVaultskeepsById(int id)
-    // {
-    //   try
-    //   {
-    //     IEnumerable<VaultKeepViewModel>  = .GetVaultsKeepsById(id);
-    //     return Ok();
-    //   }
-    //   catch (System.Exception e)
-    //   {
-    //     return BadRequest(e.Message);
-    //   }
-    // }
 
     [Authorize]
     [HttpDelete("{id}")]
